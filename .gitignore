@@ -1,0 +1,82 @@
+HELP.md
+.gradle
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+### VS Code ###
+.vscode/
+
+### 추가
+# Mac OS 관련
+.DS_Store
+
+# IntelliJ IDEA 관련
+.idea/
+
+# Eclipse 관련 (IntelliJ만 쓰면 생략 가능)
+.settings/
+
+# Gradle 관련
+.gradle/
+
+# Maven 관련
+target/
+
+# 로그 파일
+*.log
+
+# 환경설정 파일
+*.env
+*.local
+
+# 테스트 리포트
+test-output/
+surefire-reports/
+
+# 운영체제나 툴에서 생성하는 임시 파일
+*.swp
+*.swo
+*.bak
+*.tmp
+*.orig
+
+# Spring Boot DevTools 자동 재시작 파일
+.spring-boot-devtools.properties
+
+# Java 관련
+*.class
+
+# 인증서나 키파일 등 보안 관련 파일
+*.pem
+*.key
+*.crt
