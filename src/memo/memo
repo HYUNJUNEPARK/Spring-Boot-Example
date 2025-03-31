@@ -1,5 +1,16 @@
 표준 HTML 구조
-
 -html, head, body 요소가 있어야 한다.
 -CSS 파일은 <head> 태그 안에 링크되어야 한다.
 -<head> 태그 안에는 meta, title 요소 등이 포함되어야한다.
+
+
+Spring Boot Validation Annotation
+-@Size	문자 길이를 제한한다.
+-@NotNull	Null을 허용하지 않는다.
+-@NotEmpty	Null 또는 빈 문자열("")을 허용하지 않는다.
+-@Past	과거 날짜만 입력할 수 있다.
+-@Future	미래 날짜만 입력할 수 있다.
+-@FutureOrPresent	미래 또는 오늘 날짜만 입력할 수 있다.
+-@Max	최댓값 이하의 값만 입력할 수 있도록 제한한다.
+-@Min	최솟값 이상의 값만 입력할 수 있도록 제한한다.
+-@Pattern	입력값을 정규식 패턴으로 검증한다.
