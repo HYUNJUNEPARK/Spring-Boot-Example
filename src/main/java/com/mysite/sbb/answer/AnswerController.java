@@ -11,9 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
+//@Slf4j
 @RequestMapping("/answer")
 @RequiredArgsConstructor
 @Controller
@@ -28,9 +26,7 @@ public class AnswerController {
         @PathVariable("id") Integer id,
         @Valid AnswerForm answerForm,
         BindingResult bindingResult
-        //@RequestParam(value="content") String content
     ) {
-
         //log.info("createAnswer() id={}, content={}", id, content);
         //에러 발생 시 question_detail 페이지 재오픈
         Question question = this.questionService.getQuestion(id);
