@@ -1,0 +1,5 @@
+표준 HTML 구조
+
+-html, head, body 요소가 있어야 한다.
+-CSS 파일은 <head> 태그 안에 링크되어야 한다.
+-<head> 태그 안에는 meta, title 요소 등이 포함되어야한다.
