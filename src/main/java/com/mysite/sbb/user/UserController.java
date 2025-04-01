@@ -55,4 +55,14 @@ public class UserController {
 
         return "redirect:/";
     }
+
+    /*
+     해당 메서드는 login_form.html 템플릿을 출력하도록 하며,
+     실제로 로그인을 진행하는 @PostMapping 방식의 메서드는 스프링 시큐리티가 대신 처리하므로 직접 코드를 작성하여 구현할 필요는 없다.
+     스프링 시큐리티의 로그인이 실패할 경우, 시큐리티의 기능으로 인해 로그인 페이지로 리다이렉트된다. 이때 페이지 매개변수로 error 가 함께 전달된다.(스프링 시큐리티 규칙)
+     */
+    @GetMapping("/login")
+    public String login() {
+        return "login_form";
+    }
 }

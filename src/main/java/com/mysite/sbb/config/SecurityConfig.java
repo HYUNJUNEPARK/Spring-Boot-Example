@@ -2,6 +2,8 @@ package com.mysite.sbb.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -39,6 +41,14 @@ public class SecurityConfig {
                 .formLogin((formLogin) -> formLogin
                         .loginPage("/user/login") //로그인 페이지 URL
                         .defaultSuccessUrl("/")) //성공 시 이동할 페이지
+                /*
+                    logout: 로그아웃 설정 담당
+                 */
+                .logout((logout) -> logout
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
+                        .logoutSuccessUrl("/") //로그아웃 성공 시 루트 페이지로 이동
+                        .invalidateHttpSession(true)) //로그아웃 시 생성된 사용자 세션 삭제
+
         ;
         return http.build();
     }
@@ -51,5 +61,14 @@ public class SecurityConfig {
     @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    /*
+        AuthenticationManager: 스프링 시큐리티의 인증을 처리한다.
+        사용자 인증 시 UserSecurityService 와 PasswordEncoder 를 내부적으로 사용하여 인증과 권한 부여 프로세스를 처리한다.
+     */
+    @Bean
+    AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
     }
 }
