@@ -4,6 +4,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -31,7 +33,23 @@ public class SecurityConfig {
                 .headers((headers) -> headers //
                         .addHeaderWriter(new XFrameOptionsHeaderWriter(
                                 XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)))
+                /*
+                    formLogin: 로그인 설정 담당
+                 */
+                .formLogin((formLogin) -> formLogin
+                        .loginPage("/user/login") //로그인 페이지 URL
+                        .defaultSuccessUrl("/")) //성공 시 이동할 페이지
         ;
         return http.build();
+    }
+
+    /*
+        비크립트는 해시 함수의 하나로 주로 비밀번호롸 같은 보안 정보를 안정하게 저장하고 검증할 때 사용하는 암호화 기술
+        new BCryptPasswordEncoder(); 보다는 빈으로 등록해서 사용하는 것이 좋다.
+        그 이유는 암호화 방식을 변경하면 BCryptPasswordEncoder 를 사용한 모든 프로그램을 일일이 찾아다니며 수정해야하기 때문
+     */
+    @Bean
+    PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }
