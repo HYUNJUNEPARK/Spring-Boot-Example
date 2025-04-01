@@ -2,9 +2,14 @@ package com.mysite.sbb.question;
 
 import com.mysite.sbb.exception.DataNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,6 +20,19 @@ import java.util.Optional;
 @Service
 public class QuestionService {
     private final QuestionRepository questionRepository;
+
+    /**
+     * 페이지 번호를 입력받아 해당 페이지의 Page 객체 리턴
+     *
+     * @param page 조회할 페이지 번호
+     * @return Page 객체
+     */
+    public Page<Question> getList(int page) {
+        List<Sort.Order> sorts = new ArrayList<>();
+        sorts.add(Sort.Order.desc("createDate"));
+        Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
+        return this.questionRepository.findAll(pageable);
+    }
 
     public List<Question> getList() {
         return this.questionRepository.findAll();

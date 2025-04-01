@@ -14,3 +14,13 @@ Spring Boot Validation Annotation
 -@Max	최댓값 이하의 값만 입력할 수 있도록 제한한다.
 -@Min	최솟값 이상의 값만 입력할 수 있도록 제한한다.
 -@Pattern	입력값을 정규식 패턴으로 검증한다.
+
+
+Paging 객체의 속성(템플릿에서 페이징 처리할 때 사용)
+-paging.isEmpty	페이지 존재 여부를 의미한다(게시물이 있으면 false, 없으면 true).
+-paging.totalElements	전체 게시물 개수를 의미한다.
+-paging.totalPages	전체 페이지 개수를 의미한다.
+-paging.size	페이지당 보여 줄 게시물 개수를 의미한다.
+-paging.number	현재 페이지 번호를 의미한다.
+-paging.hasPrevious	이전 페이지의 존재 여부를 의미한다.
+-paging.hasNext	다음 페이지의 존재 여부를 의미한다.
