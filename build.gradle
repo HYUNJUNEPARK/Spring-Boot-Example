@@ -53,6 +53,8 @@ dependencies {
 	//Spring Security: 웹 애플리케이션의 인증과 권한 담당
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
+
+
 }
 
 tasks.named('test') {

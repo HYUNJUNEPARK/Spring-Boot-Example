@@ -3,6 +3,7 @@ package com.mysite.sbb.answer;
 import java.time.LocalDateTime;
 
 import com.mysite.sbb.question.Question;
+import com.mysite.sbb.user.SiteUser;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -27,4 +28,7 @@ public class Answer {
 
     @ManyToOne //N:1 관계, Answer 엔티티의 question 속성과 Question 엔티티가 서로 연결된다(실제 DB 에서 외래키 관계가 생성됨)
     private Question question;
+
+    @ManyToOne
+    private SiteUser author;
 }

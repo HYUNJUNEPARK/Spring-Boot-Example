@@ -1,14 +1,18 @@
 package com.mysite.sbb.question;
 
 import com.mysite.sbb.answer.AnswerForm;
+import com.mysite.sbb.user.SiteUser;
+import com.mysite.sbb.user.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 /*
@@ -20,6 +24,7 @@ import java.util.List;
 public class QuestionController {
     //private final QuestionRepository questionRepository;
     private final QuestionService questionService;
+    private final UserService userService;
 
     /*
         컨트롤러에서 리포지터리를 직접 호출하지 않고 서비스를 두어 데이터를 처리한다.
@@ -38,9 +43,9 @@ public class QuestionController {
         return "question_list";
     }
 
-/*
- 해당 코드가 비활성화 되어 있지 않다면, 바로 위의 페이징 처리 메서드와 충동해 예외 발생함
- */
+    /*
+     해당 코드가 비활성화 되어 있지 않다면, 바로 위의 페이징 처리 메서드와 충동해 예외 발생함
+     */
 //    @GetMapping("/list")
 //    public String list(Model model) {
 //        List<Question> questionList = this.questionService.getList();
@@ -63,21 +68,28 @@ public class QuestionController {
      * @param questionForm
      * @param bindingResult: subject, content 항목을 지닌 폼이 전송되면 QuestionForm의 subject, content 속성이 자동으로 바인딩
      *
+     * @PreAuthorize("isAuthenticated()") 로그인한 사용자만 호출 가능. 애너테이션이 붙은 메서드는 로그인한 경우에만 실행
      * BindingResult 매개변수는 항상 @Valid 매개변수 바로 뒤에 위치해야 한다. 만약 두 매개변수의 위치가 정확하지 않다면 @Valid만 적용되어 입력값 검증 실패 시 400 오류가 발생한다.
      */
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/create")
     public String questionCreate(
         @Valid QuestionForm questionForm,
-        BindingResult bindingResult
+        BindingResult bindingResult,
+        Principal principal
     ) {
         if (bindingResult.hasErrors()) {
             return "question_form";
         }
 
-        this.questionService.create(questionForm.getSubject(), questionForm.getContent());
+        //로그인 중인 사용자 데이터
+        SiteUser siteUser = this.userService.getUser(principal.getName());
+
+        this.questionService.create(questionForm.getSubject(), questionForm.getContent(), siteUser);
         return "question_form";
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/create")
     public String questionCreate(QuestionForm questionForm) {
         return "question_form";

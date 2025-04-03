@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.mysite.sbb.answer.Answer;
+import com.mysite.sbb.user.SiteUser;
 import jakarta.persistence.*;
 
 import lombok.Getter;
@@ -27,4 +28,7 @@ public class Question {
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE) //mappedBy 는 참조 엔티티의 속성명, CascadeType.REMOVE 질문을 삭제하면 그에 달린 답변들도 함께 삭제됨
     private List<Answer> answerList;
+
+    @ManyToOne
+    private SiteUser author;
 }

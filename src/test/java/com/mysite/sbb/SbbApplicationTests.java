@@ -5,6 +5,7 @@ import com.mysite.sbb.answer.AnswerRepository;
 import com.mysite.sbb.question.Question;
 import com.mysite.sbb.question.QuestionRepository;
 import com.mysite.sbb.question.QuestionService;
+import com.mysite.sbb.user.UserRepository;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -31,21 +32,31 @@ class SbbApplicationTests {
 	private AnswerRepository answerRepository;
 
 	@Autowired
+	private UserRepository userRepository;
+
+	@Autowired
 	private QuestionService questionService;
 
 	//@Transactional //메서드가 종료될 때까지 DB 세션 유지 -> 기본적으로 테스트가 끝나면 트랜잭션을 롤백
 	@Test
 	void testJpa() {
-//		/**
-//		 *  총 300개의 테스트 데이터를 생성
-//		 *
-//		 *  @Transactional 을 비활성화 시키고 실행시킨다.
-//		 */
+		//모든 데이터 삭제하기
+//		questionRepository.deleteAll(); //질문
+//		answerRepository.deleteAll(); //답변
+//		userRepository.deleteAll(); //사용자
+
+
+
+		/*
+		 *  총 300개의 테스트 데이터를 생성
+		 *
+		 *  @Transactional 을 비활성화 시키고 실행시킨다.
+		 */
 //		for (int i = 1; i <= 300; i++) {
 //			String subject = String.format("테스트 데이터입니다:[%03d]", i);
 //			String content = "내용무";
 //			log.info("createTest() id={}, content={}", subject, content);
-//			this.questionService.create(subject, content);
+//			this.questionService.create(subject, content, null);
 //		}
 
 
