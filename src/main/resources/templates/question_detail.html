@@ -11,8 +11,15 @@
             <div class="card-text" style="white-space: pre-line;" th:text="${question.content}"></div>
 
             <div class="d-flex justify-content-end">
+
+                <!-- 질문 내용 수정 일시 -->
+                <div th:if="${question.modifyDate != null}" class="badge bg-light text-dark p-2 text-start mx-3">
+                    <div class="mb-2">modified at</div>
+                    <div th:text="${#temporals.format(question.modifyDate, 'yyyy-MM-dd HH:mm')}"></div>
+                </div>
+
+                <!--작성자 정보가 있다면 글 작성자 표시-->
                 <div class="badge bg-light text-dark p-2 text-start">
-                    <!--작성자 정보가 있다면 글 작성자 표시-->
                     <div class="mb-2">
                         <span th:if="${question.author != null}" th:text="${question.author.username}"></span>
                     </div>
@@ -30,6 +37,19 @@
                    sec:authorize="isAuthenticated()"
                    th:if="${question.author != null and #authentication.getPrincipal().getUsername() == question.author.username}"
                    th:text="수정"></a>
+
+                <!--
+                    href 에 삭제를 위한 URL을 직접 사용하지 않고 아래와 같이 구현한 이유
+                    -> '정말로 삭제히사겠습니까?'와 같은 메시지와 함께 별도의 확인 절차를 중간에 끼워 넣기 위해서
+                    -> 만약 href 삭제를 위한 URL 을 직접 사용한다면 삭제를 확인하는 과정을 거치지 않고 질문이 삭제됨
+
+₩                   th:data-uri 속성에 설정한 값은 클릭 이벤트 발생 시 별도의 자바스크립트 코드에서 this.data.uri를 사용하여 그 값을 얻어 실행할 수 있다.
+                -->
+                <a href="javascript:void(0);" th:data-uri="@{|/question/delete/${question.id}|}"
+                   class="delete btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"
+                   th:if="${question.author != null and #authentication.getPrincipal().getUsername() == question.author.username}"
+                   th:text="삭제"></a>
+
             </div>
         </div>
     </div>
@@ -43,8 +63,18 @@
         <div class="card-body">
             <div class="card-text" style="white-space: pre-line;" th:text="${answer.content}"></div>
 
-            <!--답변의 작성자 정보가 있다면 표시-->
             <div class="d-flex justify-content-end">
+
+
+                <!--답변 수정 일시-->
+                <div th:if="${answer.modifyData != null}" class="badge bg-light text-dark p-2 text-start mx-3">
+                    <div class="mb-2">modified at</div>
+                    <!--TODO 문제 있음                    -->
+                    <!--<div th:text="${#temporals.format(answer.modifyDate, 'yyyy-MM-dd HH:mm')}"></div>-->
+                    <div th:text="${answer.modifyData}"></div>
+                </div>
+
+                <!--답변의 작성자 정보가 있다면 표시-->
                 <div class="badge bg-light text-dark p-2 text-start">
                     <div class="mb-2">
                         <span th:if="${answer.author != null}" th:text="${answer.author.username}"></span>
@@ -52,22 +82,51 @@
                     <div th:text="${#temporals.format(answer.createDate, 'yyyy-MM-dd HH:mm')}"></div>
                 </div>
             </div>
+
+            <!-- 수정하기 버튼-->
+            <div class="my-3">
+                <a th:href="@{|/answer/modify/${answer.id}|}" class="btn btn-sm btn-outline-secondary"
+                   sec:authorize="isAuthenticated()"
+                   th:if="${answer.author != null and #authentication.getPrincipal().getUsername() == answer.author.username}"
+                   th:text="수정"></a>
+            </div>
+
+            <!-- 삭제하기 버튼 -->
+            <a href="javascript:void(0);" th:data-uri="@{|/answer/delete/${answer.id}|}"
+               class="delete btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"
+               th:if="${answer.author != null and #authentication.getPrincipal().getUsername() == answer.author.username}"
+               th:text="삭제"></a>
+
         </div>
     </div>
     <!-- 답변 반복 끝  -->
+
     <!-- 답변 작성 -->
     <form th:action="@{|/answer/create/${question.id}|}" th:object="${answerForm}" method="post" class="my-3">
-<!--        <div class="alert alert-danger" role="alert" th:if="${#fields.hasAnyErrors()}">-->
-<!--            <div th:each="err : ${#fields.allErrors()}" th:text="${err}" />-->
-<!--        </div>-->
+        <!--        <div class="alert alert-danger" role="alert" th:if="${#fields.hasAnyErrors()}">-->
+        <!--            <div th:each="err : ${#fields.allErrors()}" th:text="${err}" />-->
+        <!--        </div>-->
 
         <div th:replace="~{form_errors :: formErrorsFragment}"></div>
 
         <!--로그인 상태에 따라 답변 입력 창 상태 변경-->
-        <textarea sec:authorize="isAnonymous()" disabled th:field="*{content}" class="form-control" rows="10"></textarea>
+        <textarea sec:authorize="isAnonymous()" disabled th:field="*{content}" class="form-control"
+                  rows="10"></textarea>
         <textarea sec:authorize="isAuthenticated()" th:field="*{content}" class="form-control" rows="10"></textarea>
 
         <input type="submit" value="답변등록" class="btn btn-primary my-2">
     </form>
 </div>
+
+<script layout:fragment="script" type='text/javascript'>
+    const delete_elements = document.getElementsByClassName("delete");
+    Array.from(delete_elements).forEach(function(element) {
+        element.addEventListener('click', function() {
+            if(confirm("정말로 삭제하시겠습니까?")) {
+                location.href = this.dataset.uri;
+            };
+        });
+    });
+</script>
+
 </html>
